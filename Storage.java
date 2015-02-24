@@ -5,8 +5,10 @@ public class Storage {
 	private static final String MESSAGE_ADD ="added to %1$s: \"%2$s\"";
 	private static final String MESSAGE_DELETE ="deleted from %1$s : \"%2$s\"";
 	private static final String MESSAGE_CLEAR ="all content cleared from %1$s";
-	private static final String MESSAGE_ERROR = "An unknown error has occurred";	
+	private static final String MESSAGE_ERROR = "An unknown error has occurred";
+	private static final String MESSAGE_NOTFOUND = "The following term: \"%1$s\" could not be found";
 	private static final String MESSAGE_SORTED = "%1$s has been sorted";
+	private static final String MESSAGE_FOUND = "Search Results";
 	private File file;
 	private boolean isSuccessful = true;
 	private String toBeAdded;
@@ -117,6 +119,32 @@ public class Storage {
 	}
 	private void displaySortSuccess() {
 		System.out.println(String.format(MESSAGE_SORTED,file.getName()));
+	}
+	public void search(String string){
+		searchArray = new ArrayList<String>();
+		for (int i = 0;i< contents.size();i++) {
+			if (lineContainsString(string, i)) {
+				addToSearchArray(i);
+			}
+		}
+		if (searchArray.size() ==0) {
+			displaySearchFail(string);
+		} else {
+			displaySearchSuccess();
+			display(searchArray);
+		}
+	}
+	private void addToSearchArray(int i) {
+		searchArray.add((i+1)+". "+ contents.get(i));
+	}
+	private void displaySearchSuccess() {
+		System.out.println(String.format(MESSAGE_FOUND));
+	}
+	private void displaySearchFail(String string) {
+		System.out.println(String.format(MESSAGE_NOTFOUND,string));
+	}
+	private boolean lineContainsString(String string, int i) {
+		return contents.get(i).contains(string);
 	}
 	public ArrayList<String> getSearchArray(){
 		return searchArray;

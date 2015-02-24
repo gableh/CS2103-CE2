@@ -42,7 +42,9 @@ public class Controller {
 			case "sort":
 				storage.sort();
 				break;
-		
+			case "search":
+				storage.search(commandArray[1]);
+				break;
 			default:
 				displayInvalidCommand();
 		}
