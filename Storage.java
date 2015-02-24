@@ -89,7 +89,7 @@ public class Storage {
 		displayClearSuccess();
 	}
 	private void displayClearSuccess() {
-		System.out.println(String.format(MESSAGE_CLEAR,"file.getName()"));
+		System.out.println(String.format(MESSAGE_CLEAR,file.getName()));
 	}
 	public void display(){
 		for (int i = 0; i < contents.size(); i++ ) {

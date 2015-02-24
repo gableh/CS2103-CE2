@@ -39,6 +39,7 @@ public class Controller {
 			case "exit":
 				exit();
 				break;
+		
 			default:
 				displayInvalidCommand();
 		}

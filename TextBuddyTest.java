@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class TextBuddyTest {
-	String[] args = new String[1];
+	String[] args = new String[0];
 	@Test
 	public void testController() {
 		Controller controller = new Controller(args);
@@ -16,12 +16,15 @@ public class TextBuddyTest {
 		controller.executeCommand("add b");
 		controller.executeCommand("add d");
 		controller.executeCommand("add c");
+		controller.executeCommand("sort");
+	
 		
 	}
 	@Test
 	public void testStorage(){
 		Storage storage = new Storage("textbuddy.txt");
 		assertEquals("test storage constructor",true,storage.getIsSuccessful());
+		assertEquals("test sort", "a",storage.getContents().get(0));
 
 
 	}
