@@ -17,7 +17,8 @@ public class TextBuddyTest {
 		controller.executeCommand("add d");
 		controller.executeCommand("add c");
 		controller.executeCommand("sort");
-	
+		controller.executeCommand("search b");
+
 		
 	}
 	@Test
@@ -25,7 +26,7 @@ public class TextBuddyTest {
 		Storage storage = new Storage("textbuddy.txt");
 		assertEquals("test storage constructor",true,storage.getIsSuccessful());
 		assertEquals("test sort", "a",storage.getContents().get(0));
-
+		assertEquals("test search", "2. b",storage.getSearchArray().get(0));
 
 	}
 	

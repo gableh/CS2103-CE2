@@ -14,7 +14,7 @@ public class Storage {
 	private ArrayList<String> contents = new ArrayList<String>();
 	private static BufferedReader reader;
 	private static BufferedWriter writer;
-	
+	private static ArrayList<String> searchArray;
 	public Storage(String fileName){
 		try {
 			file = accessFile(fileName);
@@ -118,7 +118,9 @@ public class Storage {
 	private void displaySortSuccess() {
 		System.out.println(String.format(MESSAGE_SORTED,file.getName()));
 	}
-	
+	public ArrayList<String> getSearchArray(){
+		return searchArray;
+	}
 	public boolean getIsSuccessful(){
 		return isSuccessful;
 	}
