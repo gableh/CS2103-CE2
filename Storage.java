@@ -5,7 +5,8 @@ public class Storage {
 	private static final String MESSAGE_ADD ="added to %1$s: \"%2$s\"";
 	private static final String MESSAGE_DELETE ="deleted from %1$s : \"%2$s\"";
 	private static final String MESSAGE_CLEAR ="all content cleared from %1$s";
-	private static final String MESSAGE_ERROR = "An unknown error has occurred";
+	private static final String MESSAGE_ERROR = "An unknown error has occurred";	
+	private static final String MESSAGE_SORTED = "%1$s has been sorted";
 	private File file;
 	private boolean isSuccessful = true;
 	private String toBeAdded;
@@ -105,7 +106,18 @@ public class Storage {
 		System.out.println(string);
 	}
 
-	
+	public void sort(){
+		Collections.sort(contents,String.CASE_INSENSITIVE_ORDER);
+		try {
+			writeToFile();
+			displaySortSuccess();
+		} catch (IOException e) {
+			displayError();
+		}
+	}
+	private void displaySortSuccess() {
+		System.out.println(String.format(MESSAGE_SORTED,file.getName()));
+	}
 	
 	public boolean getIsSuccessful(){
 		return isSuccessful;

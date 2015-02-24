@@ -39,6 +39,9 @@ public class Controller {
 			case "exit":
 				exit();
 				break;
+			case "sort":
+				storage.sort();
+				break;
 		
 			default:
 				displayInvalidCommand();
