@@ -1,5 +1,4 @@
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 public class TextBuddyTest {
@@ -18,7 +17,6 @@ public class TextBuddyTest {
 		controller.executeCommand("add c");
 		controller.executeCommand("sort");
 		controller.executeCommand("search b");
-
 		
 	}
 	@Test

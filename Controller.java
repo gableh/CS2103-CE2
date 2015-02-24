@@ -39,11 +39,18 @@ public class Controller {
 			case "exit":
 				exit();
 				break;
+			case "display":
+				storage.display();
+				break;
 			case "sort":
 				storage.sort();
 				break;
 			case "search":
-				storage.search(commandArray[1]);
+				if(commandArray.length==1){
+					System.out.println("Error, please enter a search query");
+				}else{
+					storage.search(commandArray[1]);
+				}
 				break;
 			default:
 				displayInvalidCommand();

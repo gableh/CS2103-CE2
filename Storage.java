@@ -9,6 +9,7 @@ public class Storage {
 	private static final String MESSAGE_NOTFOUND = "The following term: \"%1$s\" could not be found";
 	private static final String MESSAGE_SORTED = "%1$s has been sorted";
 	private static final String MESSAGE_FOUND = "Search Results";
+	private static final String MESSAGE_EMPTY = "%1$s is empty";
 	private File file;
 	private boolean isSuccessful = true;
 	private String toBeAdded;
@@ -38,6 +39,7 @@ public class Storage {
 		} catch (Exception e) {
 			displayError();
 		} finally {
+
 			closeReader(reader);
 		}
 	}
@@ -66,6 +68,7 @@ public class Storage {
 	private void writeLineToFile(int i) throws IOException {
 		writer.write(contents.get(i).trim());
 	}
+
 	private boolean notLastLine(int i){
 		return i != contents.size()-1;
 	}
@@ -95,10 +98,19 @@ public class Storage {
 		System.out.println(String.format(MESSAGE_CLEAR,file.getName()));
 	}
 	public void display(){
+		if(fileIsEmpty()){
+			displayEmptyFile();
+		}
 		for (int i = 0; i < contents.size(); i++ ) {
 			displayLine((i+1)+". "+ contents.get(i));
 		}
 	}
+	private boolean fileIsEmpty() {
+	    return contents.size()==0;
+    }
+	private void displayEmptyFile() {
+	    System.out.println(String.format(MESSAGE_EMPTY,file.getName()));
+    }
 	public void display(ArrayList<String> list){
 		for (int i = 0; i < list.size(); i++ ){
 			displayLine(list.get(i));
@@ -130,6 +142,7 @@ public class Storage {
 		if (searchArray.size() ==0) {
 			displaySearchFail(string);
 		} else {
+
 			displaySearchSuccess();
 			display(searchArray);
 		}
@@ -149,6 +162,7 @@ public class Storage {
 	public ArrayList<String> getSearchArray(){
 		return searchArray;
 	}
+
 	public boolean getIsSuccessful(){
 		return isSuccessful;
 	}
