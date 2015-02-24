@@ -1,15 +1,112 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 public class Storage {
+	private static final String MESSAGE_ADD ="added to %1$s: \"%2$s\"";
+	private static final String MESSAGE_DELETE ="deleted from %1$s : \"%2$s\"";
+	private static final String MESSAGE_CLEAR ="all content cleared from %1$s";
+	private static final String MESSAGE_ERROR = "An unknown error has occurred";
+	private File file;
 	private boolean isSuccessful = true;
+	private String toBeAdded;
+	private String toBeDeleted;
+	private ArrayList<String> contents = new ArrayList<String>();
+	private static BufferedReader reader;
+	private static BufferedWriter writer;
+	
 	public Storage(String fileName){
 		try {
-			File file = accessFile(fileName);
-			BufferedWriter writer = createWriter(file);
-			BufferedReader reader = createReader(file);
+			file = accessFile(fileName);
+			reader = createReader(file);
+			setContents();
 		} catch (Exception e) {
 			 isSuccessful = false;
 		}
 	}
+	public ArrayList<String> getContents(){
+		return contents;
+	}
+	private void setContents() throws IOException{
+		String line;
+		try{
+			while ((line = reader.readLine())!= null) {
+				contents.add(line);
+			}
+		} catch (Exception e) {
+			displayError();
+		} finally {
+			closeReader(reader);
+		}
+	}
+	private void displayError() {
+		System.out.println(MESSAGE_ERROR);
+	}
+	public void add(String[] Commands) throws IOException{
+		createLine(Commands);
+		contents.add(toBeAdded);
+		writeToFile();
+		displayAddSuccess();
+	}
+	private void displayAddSuccess() {
+		System.out.println(String.format(MESSAGE_ADD,file.getName(),toBeAdded.trim()));
+	}
+	private void writeToFile() throws IOException{
+		writer = createWriter(file);
+		for (int i = 0; i< contents.size();i++) {
+			writeLineToFile(i);
+			if (notLastLine(i)) {
+				writer.newLine();
+			}
+		}
+		closeStreams(writer,reader);
+	}
+	private void writeLineToFile(int i) throws IOException {
+		writer.write(contents.get(i).trim());
+	}
+	private boolean notLastLine(int i){
+		return i != contents.size()-1;
+	}
+	private void createLine(String[] Commands){
+		toBeAdded = "";
+		for (int i=1;i<Commands.length;i++) {
+			toBeAdded=toBeAdded + Commands[i]+" ";
+		}
+	
+	}
+	public void delete(int lineNumber) throws IOException{
+		toBeDeleted = contents.get(lineNumber -1);
+		contents.remove(lineNumber -1);
+		writeToFile();
+		displayDeleteSuccess();
+
+	}
+	private void displayDeleteSuccess() {
+		System.out.println(String.format(MESSAGE_DELETE,file.getName(),toBeDeleted));
+	}
+	public void clear() throws IOException{
+		contents = new ArrayList<String>();
+		writeToFile();
+		displayClearSuccess();
+	}
+	private void displayClearSuccess() {
+		System.out.println(String.format(MESSAGE_CLEAR,"file.getName()"));
+	}
+	public void display(){
+		for (int i = 0; i < contents.size(); i++ ) {
+			displayLine((i+1)+". "+ contents.get(i));
+		}
+	}
+	public void display(ArrayList<String> list){
+		for (int i = 0; i < list.size(); i++ ){
+			displayLine(list.get(i));
+		}
+	}
+	public void displayLine(String string){
+		System.out.println(string);
+	}
+
+	
+	
 	public boolean getIsSuccessful(){
 		return isSuccessful;
 	}
@@ -41,7 +138,7 @@ public class Storage {
 	 * @throws IOException
 	 */
 	private BufferedWriter createWriter(File file) throws IOException {
-		return new BufferedWriter(new FileWriter(file.getAbsoluteFile(),true));
+		return new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
 	}
 	/**
 	 * Creates a bufferedReader from the input file.
