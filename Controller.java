@@ -1,5 +1,6 @@
 import java.io.*;
 public class Controller {
+	private static final String MESSAGE_NOQUERY = "Error, please enter a search query";
 	private static final String MESSAGE_INVALIDCOMMAND = "Invalid Command.";
 	private static final String MESSAGE_ERROR = "An unknown error has occurred";
 	private static final String MESSAGE_GOODBYE = "Goodbye.";
@@ -21,7 +22,7 @@ public class Controller {
 		switch (getCommand()) {
 			case "add":
 				try {
-					storage.add(commandArray);
+					addTo(storage);
 				} catch (IOException e) {
 					displayError();				
 				}
@@ -46,16 +47,28 @@ public class Controller {
 				storage.sort();
 				break;
 			case "search":
-				if(commandArray.length==1){
-					System.out.println("Error, please enter a search query");
+				if(hasNoQuery()){
+					displayNoQueryError();
 				}else{
-					storage.search(commandArray[1]);
+					search(storage);
 				}
 				break;
 			default:
 				displayInvalidCommand();
 		}
 	}
+	private void addTo(Storage storage) throws IOException {
+	    storage.add(commandArray);
+    }
+	private void search(Storage storage) {
+	    storage.search(commandArray[1]);
+    }
+	private void displayNoQueryError() {
+	    System.out.println(MESSAGE_NOQUERY);
+    }
+	private boolean hasNoQuery() {
+	    return commandArray.length==1;
+    }
 	private void displayInvalidCommand() {
 		System.out.println(MESSAGE_INVALIDCOMMAND);
 	}
