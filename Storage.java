@@ -23,7 +23,7 @@ public class Storage {
 			file = accessFile(fileName);
 			reader = createReader(file);
 			setContents();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			 isSuccessful = false;
 		}
 	}
