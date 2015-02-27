@@ -1,5 +1,6 @@
 import java.io.*;
 public class Controller {
+	private static final String DEFAULT_FILENAME = "textbuddy.txt";
 	private static final String MESSAGE_NOQUERY = "Error, please enter a search query";
 	private static final String MESSAGE_INVALIDCOMMAND = "Invalid Command.";
 	private static final String MESSAGE_ERROR = "An unknown error has occurred";
@@ -98,11 +99,17 @@ public class Controller {
 	private void setFileName(String[] args) {
 		if (args.length == 0) {
 			displayMessage(MESSAGE_NOFILE);
-			fileName = "textbuddy.txt";
+			setDefaultFileName();
 		} else {
-			fileName = args[0];
+			setGivenFileName(args);
 		}
 	}
+	private void setGivenFileName(String[] args) {
+	    fileName = args[0];
+    }
+	private void setDefaultFileName() {
+	    fileName = DEFAULT_FILENAME;
+    }
 
 	private void displayMessage(String message) {
 		System.out.println(message);

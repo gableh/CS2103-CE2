@@ -18,6 +18,7 @@ public class Storage {
 	private static BufferedReader reader;
 	private static BufferedWriter writer;
 	private static ArrayList<String> searchArray;
+	private String line;
 	public Storage(String fileName){
 		try {
 			file = accessFile(fileName);
@@ -31,10 +32,9 @@ public class Storage {
 		return contents;
 	}
 	private void setContents() {
-		String line;
 		try{
-			while ((line = reader.readLine())!= null) {
-				contents.add(line);
+			while (hasLine()) {
+				addTheLine();
 			}
 		} catch (Exception e) {
 			displayError();
@@ -43,6 +43,12 @@ public class Storage {
 			closeReader(reader);
 		}
 	}
+	private boolean addTheLine() {
+	    return contents.add(line);
+    }
+	private boolean hasLine() throws IOException {
+	    return (line = reader.readLine())!= null;
+    }
 	private void displayError() {
 		System.out.println(MESSAGE_ERROR);
 	}
@@ -78,11 +84,14 @@ public class Storage {
 	}
 	private void writeLineToFile(int i) {
 		try {
-	        writer.write(contents.get(i).trim());
+	        writeTheLine(i);
         } catch (IOException e) {
 	        displayError();
         }
 	}
+	private void writeTheLine(int i) throws IOException {
+	    writer.write(contents.get(i).trim());
+    }
 
 	private boolean notLastLine(int i) {
 		return i != contents.size()-1;
@@ -90,25 +99,37 @@ public class Storage {
 	private void createLine(String[] Commands) {
 		toBeAdded = "";
 		for (int i=1;i<Commands.length;i++) {
-			toBeAdded=toBeAdded + Commands[i]+" ";
+			addToLine(Commands, i);
 		}
 	
 	}
+	private void addToLine(String[] Commands, int i) {
+	    toBeAdded=toBeAdded + Commands[i]+" ";
+    }
 	public void delete(int lineNumber) {
-		toBeDeleted = contents.get(lineNumber -1);
-		contents.remove(lineNumber -1);
+		setToBeDeleted(lineNumber);
+		removeLine(lineNumber);
 		writeToFile();
 		displayDeleteSuccess();
 
 	}
+	private void removeLine(int lineNumber) {
+	    contents.remove(lineNumber -1);
+    }
+	private void setToBeDeleted(int lineNumber) {
+	    toBeDeleted = contents.get(lineNumber -1);
+    }
 	private void displayDeleteSuccess() {
 		System.out.println(String.format(MESSAGE_DELETE,file.getName(),toBeDeleted));
 	}
 	public void clear() {
-		contents = new ArrayList<String>();
+		wipeContent();
 		writeToFile();
 		displayClearSuccess();
 	}
+	private void wipeContent() {
+	    contents = new ArrayList<String>();
+    }
 	private void displayClearSuccess() {
 		System.out.println(String.format(MESSAGE_CLEAR,file.getName()));
 	}
