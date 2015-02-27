@@ -27,10 +27,10 @@ public class Storage {
 			 isSuccessful = false;
 		}
 	}
-	public ArrayList<String> getContents(){
+	public ArrayList<String> getContents() {
 		return contents;
 	}
-	private void setContents() throws IOException{
+	private void setContents() {
 		String line;
 		try{
 			while ((line = reader.readLine())!= null) {
@@ -46,6 +46,9 @@ public class Storage {
 	private void displayError() {
 		System.out.println(MESSAGE_ERROR);
 	}
+	private static void displayIOError() {
+		System.out.println(MESSAGE_ERROR);
+	}
 	public void add(String[] Commands) throws IOException{
 		createLine(Commands);
 		contents.add(toBeAdded);
@@ -55,31 +58,43 @@ public class Storage {
 	private void displayAddSuccess() {
 		System.out.println(String.format(MESSAGE_ADD,file.getName(),toBeAdded.trim()));
 	}
-	private void writeToFile() throws IOException{
-		writer = createWriter(file);
+	private void writeToFile() {
+		try {
+	        writer = createWriter(file);
+        } catch (IOException e) {
+	        displayError();
+        }
 		for (int i = 0; i< contents.size();i++) {
 			writeLineToFile(i);
 			if (notLastLine(i)) {
-				writer.newLine();
+				try {
+	                writer.newLine();
+                } catch (IOException e) {
+	                displayError();
+                }
 			}
 		}
 		closeStreams(writer,reader);
 	}
-	private void writeLineToFile(int i) throws IOException {
-		writer.write(contents.get(i).trim());
+	private void writeLineToFile(int i) {
+		try {
+	        writer.write(contents.get(i).trim());
+        } catch (IOException e) {
+	        displayError();
+        }
 	}
 
-	private boolean notLastLine(int i){
+	private boolean notLastLine(int i) {
 		return i != contents.size()-1;
 	}
-	private void createLine(String[] Commands){
+	private void createLine(String[] Commands) {
 		toBeAdded = "";
 		for (int i=1;i<Commands.length;i++) {
 			toBeAdded=toBeAdded + Commands[i]+" ";
 		}
 	
 	}
-	public void delete(int lineNumber) throws IOException{
+	public void delete(int lineNumber) {
 		toBeDeleted = contents.get(lineNumber -1);
 		contents.remove(lineNumber -1);
 		writeToFile();
@@ -89,7 +104,7 @@ public class Storage {
 	private void displayDeleteSuccess() {
 		System.out.println(String.format(MESSAGE_DELETE,file.getName(),toBeDeleted));
 	}
-	public void clear() throws IOException{
+	public void clear() {
 		contents = new ArrayList<String>();
 		writeToFile();
 		displayClearSuccess();
@@ -122,12 +137,8 @@ public class Storage {
 
 	public void sort(){
 		Collections.sort(contents,String.CASE_INSENSITIVE_ORDER);
-		try {
-			writeToFile();
-			displaySortSuccess();
-		} catch (IOException e) {
-			displayError();
-		}
+		writeToFile();
+		displaySortSuccess();
 	}
 	private void displaySortSuccess() {
 		System.out.println(String.format(MESSAGE_SORTED,file.getName()));
@@ -172,7 +183,7 @@ public class Storage {
 	 * @return File
 	 * @throws IOException
 	 */
-	private static File accessFile(String args) throws IOException {
+	private static File accessFile(String args) {
 		File file = new File(args);
 		checkFileExists(file);
 		return file;
@@ -182,9 +193,13 @@ public class Storage {
 	 * @param file
 	 * @throws IOException
 	 */
-	private static void checkFileExists(File file) throws IOException {
+	private static void checkFileExists(File file) {
 		if (!file.exists()) {
-			file.createNewFile();
+			try {
+	            file.createNewFile();
+            } catch (IOException e) {
+	            displayIOError();
+            }
 		}
 	}
 	/**
@@ -202,8 +217,7 @@ public class Storage {
 	 * @return BufferedReader
 	 * @throws FileNotFoundException
 	 */
-	private BufferedReader createReader(File file)
-			throws FileNotFoundException {
+	private BufferedReader createReader(File file) throws FileNotFoundException {
 		return new BufferedReader(new FileReader(file));
 	}
 	/**
@@ -212,8 +226,7 @@ public class Storage {
 	 * @param reader
 	 * @throws IOException
 	 */
-	private void closeStreams(BufferedWriter writer, BufferedReader reader)
-			throws IOException {
+	private void closeStreams(BufferedWriter writer, BufferedReader reader) {
 		closeWriter(writer);
 		closeReader(reader);
 	
@@ -223,9 +236,13 @@ public class Storage {
 	 * @param reader
 	 * @throws IOException
 	 */
-	private void closeReader(BufferedReader reader) throws IOException {
+	private void closeReader(BufferedReader reader) {
 		if (reader!= null) {
-			reader.close();
+			try {
+	            reader.close();
+            } catch (IOException e) {
+            	displayError();
+            }
 			reader = null;
 		}
 	}
@@ -234,10 +251,14 @@ public class Storage {
 	 * @param writer
 	 * @throws IOException
 	 */
-	private void closeWriter(BufferedWriter writer) throws IOException {
+	private void closeWriter(BufferedWriter writer) {
 		if (writer !=null) {
-			writer.flush();
-			writer.close();
+			try {
+	            writer.flush();
+				writer.close();
+            } catch (IOException e) {
+	           displayError();
+            }
 			writer=null;
 		}
 	}

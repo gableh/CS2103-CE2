@@ -21,21 +21,13 @@ public class Controller {
 		parseCommand(command);
 		switch (getCommand()) {
 			case "add":
-				try {
-					addTo(storage);
-				} catch (IOException e) {
-					displayError();				
-				}
+				addTo(storage);
 				break;
 			case "delete":
 				deleteLine(storage);
 				break;
 			case "clear":
-				try {
-					storage.clear();
-				} catch (IOException e) {
-					displayError();				
-				}
+				storage.clear();
 				break;
 			case "exit":
 				exit();
@@ -57,8 +49,12 @@ public class Controller {
 				displayInvalidCommand();
 		}
 	}
-	private void addTo(Storage storage) throws IOException {
-	    storage.add(commandArray);
+	private void addTo(Storage storage) {
+	    try {
+	        storage.add(commandArray);
+        } catch (IOException e) {
+        	displayError();
+        }
     }
 	private void search(Storage storage) {
 	    storage.search(commandArray[1]);
@@ -74,11 +70,7 @@ public class Controller {
 	}
 	private void deleteLine(Storage storage) {
 		getLineNumber(commandArray[1]);
-		try {
-			storage.delete(lineNumber);
-		} catch (IOException e) {
-			displayError();				
-		}
+		storage.delete(lineNumber);
 	}
 	private void displayError() {
 		System.out.println(MESSAGE_ERROR);

@@ -47,6 +47,31 @@ public class TextBuddyTest {
         }
 	}
 	@Test
+	public void testDelete() {
+		try {
+	        Method storageAdd = Storage.class.getDeclaredMethod("delete",int.class);
+			Storage storage = new Storage("textbuddy.txt");
+			int testInt = 1;
+			Object[] argObjects = {testInt}; 
+	        storageAdd.setAccessible(true);
+	        try {
+	            storageAdd.invoke(storage, argObjects);
+            } catch (IllegalAccessException e) {
+	            e.printStackTrace();
+            } catch (IllegalArgumentException e) {
+	            e.printStackTrace();
+            } catch (InvocationTargetException e) {
+	            e.printStackTrace();
+            }
+			Storage storage1 = new Storage("textbuddy.txt");
+			assertEquals("test delete","h",storage1.getContents().get(0));
+        } catch (NoSuchMethodException e) {
+	        e.printStackTrace();
+        } catch (SecurityException e) {
+	        e.printStackTrace();
+        }
+	}
+	@Test
 	public void testController() {
 		assertEquals("test constructor","textbuddy.txt",controller.getFileName());
 		assertEquals("test is running",true,controller.getIsRunning());
