@@ -1,5 +1,14 @@
 import java.util.Scanner;
-
+/**
+ * 
+ * @author Gable Heng
+ *This program is used to store the information entered by the user into a text file.The text file can either be specified
+ *by the user or a default one,textbuddy.txt will be used if no filename is specified.This program will
+ *ignore any commands that are invalid.The commands given are case insensitive.
+ *
+ *Valid Commands are display,add,delete,clear,sort,search and exit.
+ *
+ */
 public class TextBuddy {
 	private static final String MESSAGE_COMMAND = "Command: ";
 	private static final String MESSAGE_ERROR = "An unknown error has occured";
