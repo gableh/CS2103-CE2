@@ -19,7 +19,13 @@ public class Storage {
 	private static BufferedWriter writer;
 	private static ArrayList<String> searchArray;
 	private String line;
-	public Storage(String fileName){
+	
+	/**
+	 * Attempts to create an ArrayList representation of the file for
+	 * easier manipulation.
+	 * @param fileName
+	 */
+	public Storage(String fileName) {
 		try {
 			file = accessFile(fileName);
 			reader = createReader(file);
@@ -82,6 +88,10 @@ public class Storage {
 		}
 		closeStreams(writer,reader);
 	}
+	/**
+	 * Attempts to write the line to file.i is the line number.
+	 * @param i
+	 */
 	private void writeLineToFile(int i) {
 		try {
 	        writeTheLine(i);

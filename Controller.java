@@ -11,6 +11,8 @@ public class Controller {
 	private static String fileName;
 	public static String[] commandArray;
 	private static final String MESSAGE_WELCOME ="Welcome to TextBuddy. %1$s is ready for use.";
+	
+	
 	public Controller(String[] args){
 		isRunning = true;
 		setFileName(args);

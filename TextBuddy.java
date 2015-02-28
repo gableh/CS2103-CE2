@@ -7,6 +7,11 @@ public class TextBuddy {
 	public static Scanner sc;
 	public static String command;
 
+	/**
+	 * Creates the controller when called and uses it to take input
+	 * Program closes when controller stops running.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		try {
 			createController(args);
